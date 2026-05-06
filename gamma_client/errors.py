@@ -7,10 +7,106 @@ and what the actual state was. "Failed" is not a useful error message.
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
+
+from pydantic import BaseModel
 
 if TYPE_CHECKING:
     from gamma_client.spec import OperationGamma
+
+
+# ---------------------------------------------------------------------------
+# GammaError — structured response body for admissibility violations
+# ---------------------------------------------------------------------------
+
+class GammaError(BaseModel):
+    """
+    Structured error returned (not raised) when Γ is violated.
+
+    Carries the full graph state at failure: what was attempted, what state
+    the resource was in, what was required, and why the call was inadmissible.
+    """
+
+    violation: str
+    description: str
+    operation: str | None = None
+    resource: str | None = None
+    current_state: str | None = None
+    required_state: list[str] | None = None
+    missing_prior: list[str] | None = None
+    blocked_by: str | None = None
+
+    _STATUS_CODES: dict[str, int] = {
+        "state_violation": 409,
+        "requires_prior": 409,
+        "forbidden_after": 409,
+        "not_found": 404,
+        "permission_denied": 403,
+        "precondition_failed": 409,
+    }
+
+    def status_code(self) -> int:
+        return self._STATUS_CODES.get(self.violation, 409)
+
+    @classmethod
+    def wrong_state(
+        cls,
+        *,
+        operation: str,
+        resource: str | None,
+        current: str | None,
+        required: list[str],
+    ) -> "GammaError":
+        required_desc = " or ".join(repr(s) for s in required)
+        current_desc = repr(current) if current is not None else "unknown"
+        return cls(
+            violation="state_violation",
+            description=(
+                f"'{operation}' requires the resource to be in state {required_desc}, "
+                f"but it is currently in state {current_desc}. "
+                f"Call the appropriate transition operation first."
+            ),
+            operation=operation,
+            resource=resource,
+            current_state=current,
+            required_state=required,
+        )
+
+    @classmethod
+    def requires_prior(
+        cls,
+        *,
+        operation: str,
+        missing: list[str],
+    ) -> "GammaError":
+        missing_desc = ", ".join(repr(m) for m in missing)
+        return cls(
+            violation="requires_prior",
+            description=(
+                f"'{operation}' requires prior calls to {missing_desc} "
+                f"in this session, but {'that has' if len(missing) == 1 else 'those have'} "
+                f"not been called yet."
+            ),
+            operation=operation,
+            missing_prior=missing,
+        )
+
+    @classmethod
+    def forbidden_after(
+        cls,
+        *,
+        operation: str,
+        blocked_by: str,
+    ) -> "GammaError":
+        return cls(
+            violation="forbidden_after",
+            description=(
+                f"'{operation}' is forbidden: '{blocked_by}' has already been called "
+                f"in this session, and the grammar declares '{operation}' inadmissible after it."
+            ),
+            operation=operation,
+            blocked_by=blocked_by,
+        )
 
 
 class GammaViolation(Exception):
