@@ -11,11 +11,14 @@ from gamma_client.spec import (
     load_spec_url,
     parse_spec,
 )
+from gamma_client.static import GammaChecker, GrammarIssue
 
 __all__ = [
     "ForbiddenAfterViolation",
+    "GammaChecker",
     "GammaSession",
     "GammaViolation",
+    "GrammarIssue",
     "OperationGamma",
     "RequiresPriorViolation",
     "RequiresStateViolation",
