@@ -8,13 +8,13 @@ and what made it inadmissible.
 """
 import pytest
 
-from gamma_client.errors import (
+from tenet.errors import (
     ForbiddenAfterViolation,
     GammaViolation,
     RequiresPriorViolation,
     RequiresStateViolation,
 )
-from gamma_client.session import GammaSession
+from tenet.session import GammaSession
 
 
 @pytest.mark.asyncio

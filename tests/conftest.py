@@ -11,8 +11,8 @@ import pytest_asyncio
 import httpx
 
 from tests.fixtures.item_app import app
-from gamma_client.spec import parse_spec
-from gamma_client.session import GammaSession
+from tenet.spec import parse_spec
+from tenet.session import GammaSession
 
 
 @pytest_asyncio.fixture

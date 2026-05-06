@@ -11,8 +11,8 @@ from __future__ import annotations
 
 import pytest
 
-from gamma_client.lint import GammaLinter, LintIssue
-from gamma_client.errors import RequiresPriorViolation, ForbiddenAfterViolation
+from tenet.lint import GammaLinter, LintIssue
+from tenet.errors import RequiresPriorViolation, ForbiddenAfterViolation
 from tests.test_py_mock import FakeSession
 
 
@@ -234,7 +234,7 @@ def test_grammar_for_unknown_class(linter):
 
 def test_override_relaxes_constraint():
     """An explicit grammar override can relax an inferred constraint."""
-    from gamma_client.spec import OperationGamma
+    from tenet.spec import OperationGamma
     # Override: execute only requires connect (not begin)
     linter = GammaLinter.for_classes(
         FakeSession,

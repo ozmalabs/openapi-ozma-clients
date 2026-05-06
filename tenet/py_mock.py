@@ -16,7 +16,7 @@ GammaPyMock wraps any Python class and:
 
 Usage::
 
-    from gamma_client.py_mock import GammaPyMock
+    from tenet.py_mock import GammaPyMock
 
     # Wrap any class — grammar inferred from annotations + docstrings
     MockSession = GammaPyMock.from_class(Session)
@@ -47,10 +47,10 @@ import inspect
 import re
 from typing import Any, get_type_hints
 
-from gamma_client.errors import GammaViolation
-from gamma_client.spec import OperationGamma
-from gamma_client.static import GammaChecker
-from gamma_client.type_gen import TypeGenerator
+from tenet.errors import GammaViolation
+from tenet.spec import OperationGamma
+from tenet.static import GammaChecker
+from tenet.type_gen import TypeGenerator
 
 
 # ---------------------------------------------------------------------------

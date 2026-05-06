@@ -4,7 +4,7 @@ import pytest_asyncio
 import httpx
 
 from tests.fixtures.item_app import app
-from gamma_client.spec import parse_spec
+from tenet.spec import parse_spec
 
 
 @pytest.mark.asyncio

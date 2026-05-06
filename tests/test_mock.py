@@ -11,7 +11,7 @@ import pytest
 import httpx
 
 from tests.fixtures.item_app import app
-from gamma_client.mock import GammaMock
+from tenet.mock import GammaMock
 
 
 # ---------------------------------------------------------------------------
@@ -210,7 +210,7 @@ async def test_mock_reset_clears_state():
 async def test_mock_from_spec_file(tmp_path):
     """Mock can be built from a spec file — no app needed."""
     import json as json_module
-    from gamma_client.spec import load_spec_file
+    from tenet.spec import load_spec_file
 
     spec_path = tmp_path / "openapi.json"
     spec_path.write_text(json_module.dumps(app.openapi()))

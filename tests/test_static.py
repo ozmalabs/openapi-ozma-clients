@@ -14,9 +14,9 @@ from __future__ import annotations
 import pytest
 
 from tests.fixtures.item_app import app
-from gamma_client.spec import parse_spec
-from gamma_client.static import GammaChecker, GrammarIssue
-from gamma_client.errors import (
+from tenet.spec import parse_spec
+from tenet.static import GammaChecker, GrammarIssue
+from tenet.errors import (
     ForbiddenAfterViolation,
     RequiresPriorViolation,
     RequiresStateViolation,
@@ -247,7 +247,7 @@ def test_enumerate_paths_cart_checkout(checker):
 # ---------------------------------------------------------------------------
 
 def test_analyzer_catches_unknown_state_reference():
-    from gamma_client.spec import OperationGamma
+    from tenet.spec import OperationGamma
     broken = {
         "publish": OperationGamma(
             operation_id="publish",
@@ -265,7 +265,7 @@ def test_analyzer_catches_unknown_state_reference():
 
 
 def test_analyzer_catches_unknown_op_reference():
-    from gamma_client.spec import OperationGamma
+    from tenet.spec import OperationGamma
     broken = {
         "checkout": OperationGamma(
             operation_id="checkout",
@@ -282,7 +282,7 @@ def test_analyzer_catches_unknown_op_reference():
 
 
 def test_analyzer_catches_requires_prior_cycle():
-    from gamma_client.spec import OperationGamma
+    from tenet.spec import OperationGamma
     # A requires B, B requires A — permanently deadlocked
     broken = {
         "opA": OperationGamma(

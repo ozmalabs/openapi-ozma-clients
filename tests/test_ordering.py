@@ -1,8 +1,8 @@
 """Tests: requires_prior and forbidden_after enforcement."""
 import pytest
 
-from gamma_client.errors import ForbiddenAfterViolation, RequiresPriorViolation
-from gamma_client.session import GammaSession
+from tenet.errors import ForbiddenAfterViolation, RequiresPriorViolation
+from tenet.session import GammaSession
 
 
 @pytest.mark.asyncio

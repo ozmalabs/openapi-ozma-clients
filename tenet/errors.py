@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Any
 from pydantic import BaseModel
 
 if TYPE_CHECKING:
-    from gamma_client.spec import OperationGamma
+    from tenet.spec import OperationGamma
 
 
 # ---------------------------------------------------------------------------

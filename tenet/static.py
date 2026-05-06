@@ -19,8 +19,8 @@ Given an OpenAPI spec with x-gamma, this module lets you:
 
 Usage::
 
-    from gamma_client.spec import load_spec_file, parse_spec
-    from gamma_client.static import GammaChecker
+    from tenet.spec import load_spec_file, parse_spec
+    from tenet.static import GammaChecker
 
     gamma_map = parse_spec(load_spec_file("openapi.json"))
     checker = GammaChecker(gamma_map)
@@ -47,13 +47,13 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from gamma_client.errors import (
+from tenet.errors import (
     ForbiddenAfterViolation,
     GammaViolation,
     RequiresPriorViolation,
     RequiresStateViolation,
 )
-from gamma_client.spec import OperationGamma
+from tenet.spec import OperationGamma
 
 
 # ---------------------------------------------------------------------------

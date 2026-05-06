@@ -15,7 +15,7 @@ HTTP backend. The same test function works against both.
 
 Usage::
 
-    from gamma_client.mock import GammaMock
+    from tenet.mock import GammaMock
 
     # From a FastAPI app (no server needed)
     mock = GammaMock.from_app(app)
@@ -45,15 +45,15 @@ from typing import Any
 
 import httpx
 
-from gamma_client.errors import (
+from tenet.errors import (
     ForbiddenAfterViolation,
     GammaError,
     GammaViolation,
     RequiresPriorViolation,
     RequiresStateViolation,
 )
-from gamma_client.spec import OperationGamma, parse_spec
-from gamma_client.static import GammaChecker
+from tenet.spec import OperationGamma, parse_spec
+from tenet.static import GammaChecker
 
 _HTTP_METHODS = {"get", "post", "put", "patch", "delete", "head", "options", "trace"}
 

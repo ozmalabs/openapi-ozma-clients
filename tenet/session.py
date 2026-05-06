@@ -7,8 +7,8 @@ Tracks:
 
 Usage::
 
-    from gamma_client.session import GammaSession
-    from gamma_client.spec import parse_spec, load_spec_url
+    from tenet.session import GammaSession
+    from tenet.spec import parse_spec, load_spec_url
 
     spec_raw = load_spec_url("http://localhost:8000/openapi.json")
     gamma_map = parse_spec(spec_raw)
@@ -28,13 +28,13 @@ from typing import Any
 
 import httpx
 
-from gamma_client.errors import (
+from tenet.errors import (
     ForbiddenAfterViolation,
     GammaViolation,
     RequiresPriorViolation,
     RequiresStateViolation,
 )
-from gamma_client.spec import OperationGamma
+from tenet.spec import OperationGamma
 
 
 class GammaSession:

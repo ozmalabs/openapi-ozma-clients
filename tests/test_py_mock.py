@@ -12,9 +12,9 @@ from __future__ import annotations
 
 import pytest
 
-from gamma_client.py_mock import GammaPyMock, infer_grammar
-from gamma_client.spec import OperationGamma
-from gamma_client.errors import GammaViolation, RequiresPriorViolation, ForbiddenAfterViolation
+from tenet.py_mock import GammaPyMock, infer_grammar
+from tenet.spec import OperationGamma
+from tenet.errors import GammaViolation, RequiresPriorViolation, ForbiddenAfterViolation
 
 
 # ---------------------------------------------------------------------------
@@ -278,7 +278,7 @@ def test_mock_reports_operations():
 # ---------------------------------------------------------------------------
 
 def test_type_gen_primitives():
-    from gamma_client.type_gen import TypeGenerator
+    from tenet.type_gen import TypeGenerator
     gen = TypeGenerator()
     assert isinstance(gen.generate(int), int)
     assert isinstance(gen.generate(str), str)
@@ -288,7 +288,7 @@ def test_type_gen_primitives():
 
 
 def test_type_gen_list():
-    from gamma_client.type_gen import TypeGenerator
+    from tenet.type_gen import TypeGenerator
     import typing
     gen = TypeGenerator()
     result = gen.generate(typing.List[int])
@@ -297,7 +297,7 @@ def test_type_gen_list():
 
 
 def test_type_gen_optional():
-    from gamma_client.type_gen import TypeGenerator
+    from tenet.type_gen import TypeGenerator
     import typing
     gen = TypeGenerator()
     result = gen.generate(typing.Optional[str])
@@ -306,7 +306,7 @@ def test_type_gen_optional():
 
 
 def test_type_gen_pydantic_model():
-    from gamma_client.type_gen import TypeGenerator
+    from tenet.type_gen import TypeGenerator
     from pydantic import BaseModel
 
     class Item(BaseModel):

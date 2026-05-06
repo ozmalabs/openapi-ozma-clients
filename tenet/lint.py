@@ -25,7 +25,7 @@ Example violations caught statically::
 
 Usage::
 
-    from gamma_client.lint import GammaLinter
+    from tenet.lint import GammaLinter
     from mylib import Session
 
     linter = GammaLinter.for_classes(Session)
@@ -49,10 +49,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from gamma_client.errors import GammaViolation
-from gamma_client.py_mock import infer_grammar
-from gamma_client.spec import OperationGamma
-from gamma_client.static import GammaChecker
+from tenet.errors import GammaViolation
+from tenet.py_mock import infer_grammar
+from tenet.spec import OperationGamma
+from tenet.static import GammaChecker
 
 
 # ---------------------------------------------------------------------------

@@ -3,8 +3,8 @@ import pytest
 import pytest_asyncio
 import httpx
 
-from gamma_client.errors import RequiresStateViolation
-from gamma_client.session import GammaSession
+from tenet.errors import RequiresStateViolation
+from tenet.session import GammaSession
 
 
 @pytest.mark.asyncio
