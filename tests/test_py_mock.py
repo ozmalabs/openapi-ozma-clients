@@ -319,3 +319,71 @@ def test_type_gen_pydantic_model():
     assert isinstance(result, Item)
     assert isinstance(result.id, int)
     assert isinstance(result.title, str)
+
+
+# ---------------------------------------------------------------------------
+# Source guard reader — catches constraints not in lifecycle pairs or docstrings
+# ---------------------------------------------------------------------------
+
+class GuardOnlySession:
+    """
+    No docstrings. No lifecycle-pair method names.
+    Grammar exists only as guards in the method bodies.
+    The heuristic reader would find nothing. The source reader finds it all.
+    """
+
+    def __init__(self) -> None:
+        self._ready = False
+        self._done = False
+
+    def prepare(self) -> None:
+        self._ready = True
+
+    def process(self, data: str) -> list[str]:
+        if not self._ready:
+            raise RuntimeError("not ready")
+        return [data]
+
+    def finish(self) -> None:
+        if not self._ready:
+            raise RuntimeError("not ready")
+        self._done = True
+
+    def restart(self) -> None:
+        if self._done:
+            raise RuntimeError("already finished")
+        self._ready = False
+
+
+def test_source_reader_finds_guards_without_heuristics():
+    """Source reader extracts grammar from method body guards alone."""
+    grammar = infer_grammar(GuardOnlySession)
+
+    # process requires prepare (reads: if not self._ready: raise)
+    assert "process" in grammar
+    assert "prepare" in grammar["process"].requires_prior
+
+    # finish requires prepare
+    assert "finish" in grammar
+    assert "prepare" in grammar["finish"].requires_prior
+
+    # restart is forbidden after finish (reads: if self._done: raise, finish sets _done=True)
+    assert "restart" in grammar
+    assert "finish" in grammar["restart"].forbidden_after
+
+
+def test_source_reader_mock_enforces_guard_constraints():
+    """GammaPyMock built on source-read grammar enforces the implied constraints."""
+    MockSession = GammaPyMock.from_class(GuardOnlySession)
+
+    s = MockSession()
+    with pytest.raises(GammaViolation):
+        s.process("data")  # prepare not called
+
+    s.prepare()
+    result = s.process("data")
+    assert isinstance(result, list)
+
+    s.finish()
+    with pytest.raises(GammaViolation):
+        s.restart()  # forbidden after finish
